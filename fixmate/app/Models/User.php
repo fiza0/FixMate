@@ -59,4 +59,30 @@ class User extends Authenticatable
     public function bookingsAsHandyman() {
         return $this->hasMany(Booking::class, 'handyman_id');
     }
+
+    /**
+     * Handyman HAS MANY Bookings, and a Booking HAS ONE Review.
+     */
+    public function reviews(){
+        return $this->hasManyThrough(
+            Review::class,
+            Booking::class,
+            'handyman_id', //Foreign key on bookings table
+            'booking_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function getAverageRatingAttribute(){
+
+        return $this->reviews()->avg('rating');
+    }
+
+    /**
+     * 
+     * ----------HOW TO APPLY avg:------------
+     * User variable $handyman, can get average by:
+     * $handyman->average_rating and it will be the average   (e.g 4.5).
+     */
 }

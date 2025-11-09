@@ -47,4 +47,20 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index')->with('success','User deleted succesfully.');
     }
+
+    public function verifyHandyman(User $user){
+        if($user->role === 'handyman'){
+            $user->update(['verified' => true]);
+            return back()->with('succes','Handyman verified.');
+        }
+        return back()->with('error', 'Only handymen can be verified.');
+    }
+
+    public function unverifyHandyman(User $user){
+        if($user->role === 'handyman'){
+            $user->update(['verified'=>false]);
+            return back()->with('success','Handyman un-verified');
+        }
+        return back()->with('error','This user is not a handyman.');
+    }
 }
