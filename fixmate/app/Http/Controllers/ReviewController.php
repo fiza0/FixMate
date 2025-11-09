@@ -36,7 +36,7 @@ class ReviewController extends Controller
             'comment'=>'nullable|string',
         ]);
 
-        //Authorization: Only home ownerof this booking can review
+        //Authorization: Only homeowner of this booking can review
         if($booking->homeowner_id!==Auth::id()){
             return back()->with('error','You are not authorized to review this booking.');
         }
@@ -56,7 +56,7 @@ class ReviewController extends Controller
         //Create review:
         Review::create([
             'booking_id' => $booking->id,
-            'review_id' => Auth::id(),
+            'reviewer_id' => Auth::id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
         ]);

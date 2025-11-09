@@ -23,14 +23,14 @@ class AdminController extends Controller
 
     //Editing for specific user
     public function edit(User $user){
-        return view('admin.users.edit', compact('users'));
+        return view('admin.users.edit', compact('user'));
     }
 
     //Update changes to DB/storage for the specific user edited
     public function update(Request $request, User $user){
         $request->validate([
             'name'=>'required|string|max:255',
-            'email'=>'required|email|max:255|unique:users,email'.$user->id,
+            'email'=>'required|email|max:255|unique:users,email,'.$user->id,
             'phone'=>'nullable|string',
             'role'=>'required|in:homeowner,handyman,admin',
         ]);
@@ -41,17 +41,17 @@ class AdminController extends Controller
 
     public function destroy(User $user){
         if($user->id === Auth::id()){
-            return back()->wiht('error','You cannot delete your own account');
+            return back()->with('error','You cannot delete your own account');
         }
 
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success','User deleted succesfully.');
+        return redirect()->route('admin.users.index')->with('success','User deleted successfully.');
     }
 
     public function verifyHandyman(User $user){
         if($user->role === 'handyman'){
             $user->update(['verified' => true]);
-            return back()->with('succes','Handyman verified.');
+            return back()->with('success','Handyman verified.');
         }
         return back()->with('error', 'Only handymen can be verified.');
     }
