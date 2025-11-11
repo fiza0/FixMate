@@ -6,6 +6,15 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HandymanController;
 use App\Http\Controllers\HomeownerController;
 
+
+// Public listing (or auth can be required)
+Route::get('/handymen', [HandymanController::class, 'index'])->name('handymen.index');
+Route::get('/handymen/{handyman}', [HandymanController::class, 'show'])->name('handymen.show');
+
+// Handyman update profile (auth + handyman)
+Route::post('/handyman/profile/update', [HandymanController::class, 'updateProfile'])
+    ->middleware(['auth','role:handyman'])->name('handyman.profile.update');
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

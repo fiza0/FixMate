@@ -1,5 +1,4 @@
 <x-app-layout>
-    <h1>Welcome, {{ $user->name }}</h1>
-    <p>Role: {{ $user->role }}</p>
-    <p>This is the handyman dashboard.</p>
+    <h1>Handyman Dashboard</h1>
+    <p>Welcome, {{ $user->name }} ({{ $user->role }})</p>
 </x-app-layout>
