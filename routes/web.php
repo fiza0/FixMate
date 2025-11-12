@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HandymanController;
@@ -28,7 +29,7 @@ Route::post('/handyman/profile/update', [HandymanController::class, 'updateProfi
 
 // Public home page
 Route::get('/', function () {
-    return view('dashboard');
+    return Auth::check() ? view('dashboard') : redirect('/login');
 });
 
 // Default Breeze dashboard (shared)
