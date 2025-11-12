@@ -28,7 +28,7 @@ Route::post('/handyman/profile/update', [HandymanController::class, 'updateProfi
 
 // Public home page
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
 // Default Breeze dashboard (shared)
