@@ -21,6 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role',
+        'phone_number',
     ];
 
     /**
@@ -45,15 +47,23 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-    public function handymanProfile() {
-    return $this->hasOne(HandymanProfile::class);
-}
-
-    public function bookingsAsHomeowner() {
-        return $this->hasMany(Booking::class, 'homeowner_id');
+   public function handyman()
+    {
+        return $this->hasOne(Handyman::class);
     }
 
-    public function bookingsAsHandyman() {
-        return $this->hasMany(Booking::class, 'handyman_id');
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function isHandyman(): bool
+    {
+        return $this->role === 'handyman' && $this->handyman()->exists();
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
     }
 }
