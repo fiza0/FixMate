@@ -1,69 +1,89 @@
 <?php
-
 namespace App\Policies;
 
 use App\Models\Booking;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class BookingPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Booking $booking)
-{
-    return $user->id === $booking->homeowner_id || $user->id === $booking->handyman_id || $user->role === 'admin';
-}
-
-    /**
-     * Determine whether the user can create models.
+     * Determine if user can create bookings
      */
     public function create(User $user): bool
     {
+        return $user->isCustomer() || $user->isHandyman();
+    }
+
+    /**
+     * Determine if user can view the booking
+     */
+    public function view(User $user, Booking $booking): bool
+    {
+        // Customer who created the booking
+        if ($user->id === $booking->user_id) {
+            return true;
+        }
+
+        // Handyman assigned to the booking
+        if ($user->handyman && $user->handyman->id === $booking->handyman_id) {
+            return true;
+        }
+
         return false;
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine if user can cancel the booking
      */
-    public function update(User $user, Booking $booking)
-{
-    // handyman can update status; homeowner can cancel if not started
-    if($user->role === 'handyman') return $user->id === $booking->handyman_id;
-    if($user->role === 'homeowner') return $user->id === $booking->homeowner_id && $booking->status === 'requested';
-    return false;
-}
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Booking $booking): bool
+    public function cancel(User $user, Booking $booking): bool
     {
-        return false;
+        // Only the customer who created the booking can cancel it
+        if ($user->id !== $booking->user_id) {
+            return false;
+        }
+
+        return $booking->canBeCancelled();
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine if handyman can accept the booking
      */
-    public function restore(User $user, Booking $booking): bool
+    public function accept(User $user, Booking $booking): bool
     {
-        return false;
+        if (!$user->isHandyman()) {
+            return false;
+        }
+
+        return $booking->canBeAccepted();
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine if handyman can decline the booking
      */
-    public function forceDelete(User $user, Booking $booking): bool
+    public function decline(User $user, Booking $booking): bool
     {
-        return false;
+        if (!$user->isHandyman()) {
+            return false;
+        }
+
+        return $booking->canBeDeclined();
+    }
+
+    /**
+     * Determine if handyman can update booking status
+     */
+    public function updateStatus(User $user, Booking $booking): bool
+    {
+        if (!$user->isHandyman()) {
+            return false;
+        }
+
+        // Only the assigned handyman can update status
+        if ($user->handyman->id !== $booking->handyman_id) {
+            return false;
+        }
+
+        // Can only update if booking is accepted or in progress
+        return in_array($booking->status, ['accepted', 'en_route', 'in_progress']);
     }
 }
