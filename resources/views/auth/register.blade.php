@@ -39,14 +39,15 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
+        <!-- Stacked Buttons -->
+        <div class="flex flex-col items-stretch mt-4">
+            <x-primary-button class="w-full justify-center">
                 {{('Register') }}
             </x-primary-button>
+
+            <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-4 py-2 mt-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
+                {{('Already registered?') }}
+            </a>
         </div>
     </form>
 </x-guest-layout>

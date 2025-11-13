@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\WelcomeEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -65,5 +67,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isCustomer(): bool
     {
         return $this->role === 'customer';
+    }
+
+    /**
+     * Send the email verification notification.
+     * Override to use our custom welcome email instead of Laravel's default.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        Mail::to($this)->send(new WelcomeEmail($this));
     }
 }
