@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HandymanController;
 use App\Http\Controllers\HomeownerController;
+use App\Http\Controllers\ReviewController;
 
 
 // Public listing (or auth can be required)
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Homewoner, submit a review
+    Route::post('/bookings/{booking}/review',[ReviewController::class,'store'])->name('reviews.store');
 });
 
 /*
@@ -57,7 +61,22 @@ Route::middleware('auth')->group(function () {
 // Admin-only routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    // GET /admin/users (index)​
+    // GET /admin/users/{user}/edit (edit)​
+    // PUT /admin/users/{user} (update)​
+    // DELETE /admin/users/{user} (destroy)
+    Route::resource('admin/users', AdminController::class)->except(['create','store','show']);
+
+
+    //Veifying a handyman
+    Route::post('/admin/users/{user}/verify',[AdminController::class,'verifyHandyman'])->name('admin.users.verify');
+    //un-verifying a handyman
+    Route::post('/admin/users/{user}/unverify',[AdminController::class,'unverifyHandyman'])->name('admin.users.unverify');
 });
+
+
+
 
 // Handyman-only routes
 Route::middleware(['auth', 'role:handyman'])->group(function () {

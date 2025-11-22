@@ -23,8 +23,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role',
         'phone_number',
+        'role',
+        'verified'
     ];
 
     /**
@@ -76,5 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         Mail::to($this)->send(new WelcomeEmail($this));
+    }
+    public function getAverageRatingAttribute(){
+
+        return $this->reviews()->avg('rating');
     }
 }
