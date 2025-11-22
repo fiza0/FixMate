@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 
-class BookingApiController extends \App\Http\Controllers\Controller
+class BookingApiController extends Controller
 {
     public function __construct()
     {
