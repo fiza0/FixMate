@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Models\Booking;
 use App\Models\Review;
 
-class AdminController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+
+class AdminController extends BaseController
 {
     public function __construct() {
         $this->middleware(['auth', 'role:admin']);

@@ -16,7 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
     
 ->withMiddleware(function (Middleware $middleware) {
     $middleware->alias([
-         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+    ]);
+
+    // Sanctum + API middleware stack
+    $middleware->group('api', [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ]);
 })
 ->withExceptions(function (Exceptions $exceptions): void {
