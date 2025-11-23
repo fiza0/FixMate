@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 class HandymanSearchController extends Controller
 {
-<<<<<<< HEAD
-=======
-    /**
-     * Display a listing of handymen with optional filters.
-     */
->>>>>>> final-merge-2
     public function index(Request $request)
     {
         $query = HandymanProfile::with('user');
