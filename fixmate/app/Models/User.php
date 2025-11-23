@@ -55,5 +55,32 @@ class User extends Authenticatable
     {
         return $this->role === 'homeowner';
     }
+
+     /**
+     * Handyman HAS MANY Bookings, and a Booking HAS ONE Review.
+     */
+    public function review(){
+        return $this->hasManyThrough(
+            Review::class,
+            Booking::class,
+            'handyman_id', //Foreign key on bookings table
+            'booking_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function getAverageRatingAttribute(){
+
+        return $this->reviews()->avg('rating');
+    }
+
+    /**
+     * 
+     * ----------HOW TO APPLY avg:------------
+     * User variable $handyman, can get average by:
+     * $handyman->average_rating and it will be the average   (e.g 4.5).
+     */
+
 }
 
