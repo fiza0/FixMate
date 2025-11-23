@@ -11,16 +11,28 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+<<<<<<< HEAD
+=======
+// Public landing page
+>>>>>>> final-merge-2
 Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
 // Dashboard
+=======
+// Dashboard (Breeze default)
+>>>>>>> final-merge-2
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+<<<<<<< HEAD
 // Profile (from Breeze)
+=======
+// Profile (Breeze)
+>>>>>>> final-merge-2
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -35,7 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
 
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+<<<<<<< HEAD
 
+=======
+>>>>>>> final-merge-2
     Route::post('/bookings/{booking}/accept', [BookingController::class, 'accept'])->name('bookings.accept');
     Route::post('/bookings/{booking}/start', [BookingController::class, 'start'])->name('bookings.start');
     Route::post('/bookings/{booking}/complete', [BookingController::class, 'complete'])->name('bookings.complete');
@@ -44,5 +59,9 @@ Route::middleware('auth')->group(function () {
 // Public handyman search/listing
 Route::get('/handymen', [HandymanSearchController::class, 'index'])->name('handymen.index');
 
+<<<<<<< HEAD
 // Auth routes
+=======
+// Breeze auth routes
+>>>>>>> final-merge-2
 require __DIR__.'/auth.php';

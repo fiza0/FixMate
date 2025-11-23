@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\HandymanProfile;
 use Illuminate\Http\Request;
 
-class HandymanSearchController extends Controller
+class HandymanApiController extends Controller
 {
-<<<<<<< HEAD
-=======
-    /**
-     * Display a listing of handymen with optional filters.
-     */
->>>>>>> final-merge-2
     public function index(Request $request)
     {
         $query = HandymanProfile::with('user');
@@ -29,8 +24,6 @@ class HandymanSearchController extends Controller
             $query->where('average_rating', '>=', $request->min_rating);
         }
 
-        $handymen = $query->paginate(12);
-
-        return view('handymen.index', compact('handymen'));
+        return response()->json($query->paginate(20));
     }
 }

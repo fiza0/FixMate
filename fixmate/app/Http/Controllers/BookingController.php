@@ -33,17 +33,28 @@ class BookingController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+<<<<<<< HEAD
             'handyman_id'  => ['required', 'exists:users,id'],
             'service_type' => ['required', 'string', 'max:255'],
             'description'  => ['required', 'string'],
             'scheduled_at' => ['required', 'date', 'after:now'],
+=======
+            'handyman_id'    => ['required', 'exists:users,id'],
+            'service_type'   => ['required', 'string', 'max:255'],
+            'description'    => ['required', 'string'],
+            'scheduled_at'   => ['required', 'date', 'after:now'],
+>>>>>>> final-merge-2
             'estimated_cost' => ['nullable', 'numeric', 'min:0'],
         ]);
 
         $handymanId  = $request->handyman_id;
         $scheduledAt = $request->scheduled_at;
 
+<<<<<<< HEAD
         // prevent double-booking that handyman at that datetime
+=======
+        // prevent double‑booking
+>>>>>>> final-merge-2
         $conflict = Booking::where('handyman_id', $handymanId)
             ->where('scheduled_at', $scheduledAt)
             ->whereNotIn('status', ['cancelled', 'completed'])
