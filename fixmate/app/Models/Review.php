@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'booking_id', 'reviewer_id', 'rating', 'comment',
+        'booking_id',
+        'homeowner_id',
+        'handyman_id',
+        'rating',
+        'comment',
     ];
 
     public function booking()
@@ -17,9 +19,13 @@ class Review extends Model
         return $this->belongsTo(Booking::class);
     }
 
-    public function reviewer()
+    public function homeowner()
     {
-        return $this->belongsTo(User::class, 'reviewer_id');
+        return $this->belongsTo(User::class, 'homeowner_id');
+    }
+
+    public function handyman()
+    {
+        return $this->belongsTo(User::class, 'handyman_id');
     }
 }
-
