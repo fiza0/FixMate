@@ -51,6 +51,7 @@ class HandymanProfileController extends Controller
             $user->handymanProfile->update($data);
         }
 
-        return redirect()->route('handyman.profile.edit')->with('success', 'Profile updated!');
+        return redirect()->route('handyman.profile.edit')->with('success', 'Your profile has been submitted! An admin will check your details and verify you shortly.');
+
     }
 }
