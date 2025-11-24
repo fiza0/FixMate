@@ -12,16 +12,21 @@
                 <div class="p-6">
                     <form method="GET" action="{{ route('handymen.index') }}" class="grid gap-4 md:grid-cols-4">
                         <div>
-                            <label for="skill" class="block text-sm font-medium text-gray-700">Skill</label>
-                            <input
-                                id="skill"
-                                name="skill"
-                                type="text"
-                                value="{{ request('skill') }}"
-                                class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                placeholder="Plumber, electrician..."
-                            >
-                        </div>
+    <label for="skill" class="block text-sm font-medium text-gray-700">Skill</label>
+    <select
+        id="skill"
+        name="skill"
+        class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+    >
+        <option value="">Any skill</option>
+        @foreach(['plumber', 'electrician', 'carpenter', 'mechanic', 'painter', 'general'] as $cat)
+            <option value="{{ $cat }}" {{ request('skill') == $cat ? 'selected' : '' }}>
+                {{ ucfirst($cat) }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 
                         <div>
                             <label for="location" class="block text-sm font-medium text-gray-700">Location</label>

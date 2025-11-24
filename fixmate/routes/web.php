@@ -3,7 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HandymanSearchController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\HandymanProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +46,44 @@ Route::middleware('auth')->group(function () {
 
 // Public handyman search/listing
 Route::get('/handymen', [HandymanSearchController::class, 'index'])->name('handymen.index');
+// Admin dashboard + users (admin only)
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'dashboard'])
+        ->name('admin.dashboard');
+
+
+    Route::post('/admin/handymen/{handymanProfile}/verify', [AdminController::class, 'verifyHandyman'])
+        ->name('admin.handymen.verify');
+
+
+    Route::post('/admin/users/{user}/toggle', [AdminController::class, 'toggleUser'])
+        ->name('admin.users.toggle');
+
+
+    Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])
+        ->name('admin.users.destroy');
+
+
+    Route::get('/admin/users/create', [AdminController::class, 'createUser'])
+        ->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class, 'storeUser'])
+        ->name('admin.users.store');
+});
+});
+
+// Reviews (homeowner)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/bookings/{booking}/review', [ReviewController::class, 'create'])
+        ->name('reviews.create');
+    Route::post('/bookings/{booking}/review', [ReviewController::class, 'store'])
+        ->name('reviews.store');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/handyman/profile/edit', [HandymanProfileController::class, 'edit'])->name('handyman.profile.edit');
+    Route::post('/handyman/profile', [HandymanProfileController::class, 'update'])->name('handyman.profile.update');
+});
 
 // Breeze auth routes
 require __DIR__.'/auth.php';
